@@ -1,0 +1,12 @@
+name: linter-check
+on: push
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check-out
+        uses: actions/checkout@v3
+      - name: run-lint
+        run: |
+          npm ci
+          npm run lint
