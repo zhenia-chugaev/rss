@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="h-100">
 
 <head>
   <meta charset="utf-8" />
@@ -7,9 +7,37 @@
   <title>Webpack App</title>
 </head>
 
-<body>
-  <h1>Hello world!</h1>
-  <h2>Tip: Check your console</h2>
+<body class="h-100 bg-white">
+  <main class="d-flex flex-column h-100">
+    <section class="py-5 text-white bg-dark">
+      <div class="container d-flex flex-column flex-wrap align-content-center">
+        <h1 class="display-3 mb-0">RSS агрегатор</h1>
+        <p class="fw-light fs-5">Начните читать RSS сегодня! Это легко, это красиво.</p>
+        <form class="row w-75 gy-2">
+          <div class="col-9">
+            <div class="form-floating text-black">
+              <input class="form-control form-control-lg rounded-1" id="rss-url" name="rss-url" type="url" placeholder="https://lorem-rss.hexlet.app/feed" aria-describedby="rss-url-sample">
+              <label class="form-label" for="rss-url">Ссылка RSS</label>
+            </div>
+          </div>
+          <div class="col-auto order-1">
+            <span class="form-text text-white-50 fw-light fs-6" id="rss-url-sample">Пример: https://lorem-rss.hexlet.app/feed</span>
+          </div>
+          <div class="col-3">
+            <button class="btn btn-lg btn-primary w-100 h-100 rounded-1" type="submit">Добавить</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="flex-grow-1"></section>
+
+    <footer class="p-3 border-top bg-light">
+      <p class="mb-0 text-center">
+        View the <a href="https://github.com/zhenia-chugaev/rss#readme" target="_blank">source code</a>
+      </p>
+    </footer>
+  </main>
 </body>
 
 </html>
