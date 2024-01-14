@@ -2,7 +2,14 @@ env:
   browser: true
   es2021: true
 extends: airbnb-base
-overrides: []
+overrides: [
+  {
+    files: src/render.js,
+    rules: {
+      no-param-reassign: warn
+    }
+  }
+]
 parserOptions:
   ecmaVersion: latest
   sourceType: module

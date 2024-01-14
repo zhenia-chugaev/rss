@@ -13,16 +13,17 @@
       <div class="container d-flex flex-column flex-wrap align-content-center">
         <h1 class="display-3 mb-0">RSS агрегатор</h1>
         <p class="fw-light fs-5">Начните читать RSS сегодня! Это легко, это красиво.</p>
-        <form class="row w-75 gy-2">
+        <form class="row gy-2 position-relative w-75" id="subscription-form" novalidate>
           <div class="col-9">
             <div class="form-floating text-black">
-              <input class="form-control form-control-lg rounded-1" id="rss-url" name="rss-url" type="url" placeholder="https://lorem-rss.hexlet.app/feed" aria-describedby="rss-url-sample">
+              <input class="form-control form-control-lg rounded-1" id="rss-url" name="rss-url" type="url" placeholder="https://lorem-rss.hexlet.app/feed" aria-describedby="rss-url-sample rss-url-feedback">
               <label class="form-label" for="rss-url">Ссылка RSS</label>
             </div>
           </div>
           <div class="col-auto order-1">
             <span class="form-text text-white-50 fw-light fs-6" id="rss-url-sample">Пример: https://lorem-rss.hexlet.app/feed</span>
           </div>
+          <span class="position-absolute top-100 d-block" id="rss-url-feedback"></span>
           <div class="col-3">
             <button class="btn btn-lg btn-primary w-100 h-100 rounded-1" type="submit">Добавить</button>
           </div>
