@@ -1,3 +1,7 @@
+import { FormStatuses } from './constants';
+
+const { SUBMITTED, FAILED, IDLE } = FormStatuses;
+
 const showErrorMessage = (inputElement, feedbackElement, message) => {
   inputElement.classList.add('is-invalid');
   feedbackElement.classList.add('invalid-feedback');
@@ -12,9 +16,9 @@ const showSuccessMessage = (inputElement, feedbackElement, message) => {
 };
 
 const formActions = {
-  submitted: showSuccessMessage,
-  failed: showErrorMessage,
-  idle: () => {},
+  [SUBMITTED]: showSuccessMessage,
+  [FAILED]: showErrorMessage,
+  [IDLE]: () => {},
 };
 
 const render = (state) => {

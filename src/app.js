@@ -1,12 +1,13 @@
 import { makeAutoObservable, autorun } from 'mobx';
 import { string } from 'yup';
 import render from './render';
+import { FormStatuses } from './constants';
 
 const app = () => {
   const state = makeAutoObservable({
     feeds: [],
     subscriptionForm: {
-      status: 'idle',
+      status: FormStatuses.IDLE,
       message: '',
     },
   });
@@ -31,12 +32,12 @@ const app = () => {
     urlSchema.validate(rssUrl)
       .then((url) => {
         state.feeds.push(url);
-        state.subscriptionForm.status = 'submitted';
+        state.subscriptionForm.status = FormStatuses.SUBMITTED;
         state.subscriptionForm.message = 'RSS успешно загружен';
         e.target.reset();
       })
       .catch((err) => {
-        state.subscriptionForm.status = 'failed';
+        state.subscriptionForm.status = FormStatuses.FAILED;
         state.subscriptionForm.message = err.message;
       });
     e.preventDefault();
