@@ -26,6 +26,9 @@ const config = {
     rules: [
       {
         test: /\.(js|jsx)$/i,
+        resolve: {
+          fullySpecified: false,
+        },
         loader: 'babel-loader',
       },
       {
