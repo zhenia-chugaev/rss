@@ -1,6 +1,8 @@
 import { makeAutoObservable, autorun } from 'mobx';
-import { string } from 'yup';
+import i18next from 'i18next';
+import { string, setLocale } from 'yup';
 import render from './render';
+import resources from './locales';
 import { FormStatuses } from './constants';
 
 const app = () => {
@@ -14,6 +16,20 @@ const app = () => {
 
   autorun(() => render(state));
 
+  i18next.init({
+    lng: 'ru',
+    resources,
+  });
+
+  setLocale({
+    string: {
+      url: 'invalidUrl',
+    },
+    mixed: {
+      required: 'requiredField',
+    },
+  });
+
   const urlSchema = string()
     .url()
     .required()
@@ -21,7 +37,7 @@ const app = () => {
     .lowercase()
     .test({
       test: (url) => !state.feeds.includes(url),
-      message: 'this subscription already exists',
+      message: 'duplicatedValue',
     });
 
   const subscriptionForm = document.querySelector('#subscription-form');
@@ -33,7 +49,7 @@ const app = () => {
       .then((url) => {
         state.feeds.push(url);
         state.subscriptionForm.status = FormStatuses.SUBMITTED;
-        state.subscriptionForm.message = 'RSS успешно загружен';
+        state.subscriptionForm.message = '';
         e.target.reset();
       })
       .catch((err) => {

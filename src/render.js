@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { FormStatuses } from './constants';
 
 const { SUBMITTED, FAILED, IDLE } = FormStatuses;
@@ -5,18 +6,17 @@ const { SUBMITTED, FAILED, IDLE } = FormStatuses;
 const showErrorMessage = (inputElement, feedbackElement, message) => {
   inputElement.classList.add('is-invalid');
   feedbackElement.classList.add('invalid-feedback');
-  feedbackElement.textContent = message;
+  feedbackElement.textContent = t(`subscriptionForm.feedback.${message}`);
 };
 
-const showSuccessMessage = (inputElement, feedbackElement, message) => {
+const resetFormElements = (inputElement, feedbackElement) => {
   inputElement.classList.remove('is-invalid');
   feedbackElement.classList.remove('invalid-feedback');
-  feedbackElement.classList.add('valid-feedback');
-  feedbackElement.textContent = message;
+  feedbackElement.textContent = '';
 };
 
 const formActions = {
-  [SUBMITTED]: showSuccessMessage,
+  [SUBMITTED]: resetFormElements,
   [FAILED]: showErrorMessage,
   [IDLE]: () => {},
 };
