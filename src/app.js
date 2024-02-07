@@ -1,8 +1,8 @@
-import { makeAutoObservable, autorun } from 'mobx';
+import { makeAutoObservable, reaction } from 'mobx';
 import axios from 'axios';
 import i18next from 'i18next';
 import { string, setLocale } from 'yup';
-import render from './render';
+import { renderForm, renderFeeds, renderPosts } from './render';
 import resources from './locales';
 import { getFeedDetails, getTranslationKeyFromError } from './utils';
 import { FormStatuses } from './constants';
@@ -18,7 +18,9 @@ const app = () => {
     posts: [],
   });
 
-  autorun(() => render(state));
+  reaction(() => state.subscriptionForm, () => renderForm(state));
+  reaction(() => state.feeds, () => renderFeeds(state));
+  reaction(() => state.posts, () => renderPosts(state));
 
   const httpClient = axios.create({
     baseURL: 'https://allorigins.hexlet.app',
@@ -55,8 +57,10 @@ const app = () => {
     const rssUrl = formData.get('rss-url');
     urlSchema.validate(rssUrl)
       .then((url) => {
-        state.subscriptionForm.message = '';
-        state.subscriptionForm.status = FormStatuses.LOADING;
+        state.subscriptionForm = {
+          status: FormStatuses.LOADING,
+          message: '',
+        };
         return httpClient.get('/raw', { params: { url } });
       })
       .then(({ data }) => {
@@ -76,13 +80,17 @@ const app = () => {
       })
       .then(() => {
         state.feedUrls.push(rssUrl);
-        state.subscriptionForm.message = 'subscriptionForm.feedback.rssLoaded';
-        state.subscriptionForm.status = FormStatuses.SUBMITTED;
+        state.subscriptionForm = {
+          status: FormStatuses.SUBMITTED,
+          message: 'subscriptionForm.feedback.rssLoaded',
+        };
         e.target.reset();
       })
       .catch((err) => {
-        state.subscriptionForm.status = FormStatuses.FAILED;
-        state.subscriptionForm.message = getTranslationKeyFromError(err);
+        state.subscriptionForm = {
+          status: FormStatuses.FAILED,
+          message: getTranslationKeyFromError(err),
+        };
       });
     e.preventDefault();
   });

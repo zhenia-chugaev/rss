@@ -56,11 +56,15 @@ const formActions = {
   [SUBMITTED]: showSuccessMessage,
 };
 
-const render = (state) => {
+const renderForm = (state) => {
   const { status, message } = state.subscriptionForm;
   const formElement = document.querySelector('#subscription-form');
   formActions[status](formElement, message);
   formElement.elements[0].focus();
 };
 
-export default render;
+const renderFeeds = () => {};
+
+const renderPosts = () => {};
+
+export { renderForm, renderFeeds, renderPosts };
