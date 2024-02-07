@@ -1,5 +1,11 @@
 import { t } from 'i18next';
 import noop from 'lodash/noop';
+import {
+  createSectionHeading,
+  createUnorderedList,
+  createFeed,
+  createPost,
+} from './elements';
 import { FormStatuses } from './constants';
 
 const {
@@ -8,42 +14,6 @@ const {
   LOADING,
   SUBMITTED,
 } = FormStatuses;
-
-const createFeedListItem = (feed) => {
-  const listItem = document.createElement('li');
-  const headingElement = document.createElement('h3');
-  const paragraphElement = document.createElement('p');
-
-  headingElement.textContent = feed.title;
-  headingElement.classList.add('h6', 'mb-0');
-
-  paragraphElement.textContent = feed.description;
-  paragraphElement.classList.add('m-0', 'text-secondary', 'small');
-
-  listItem.append(headingElement, paragraphElement);
-
-  return listItem;
-};
-
-const createPostListItem = (post) => {
-  const listItem = document.createElement('li');
-  const linkElement = document.createElement('a');
-  const buttonElement = document.createElement('button');
-
-  linkElement.textContent = post.title;
-  linkElement.classList.add('fw-semibold');
-  linkElement.setAttribute('href', post.link);
-  linkElement.setAttribute('target', '_blank');
-
-  buttonElement.textContent = t('posts.modalButton');
-  buttonElement.classList.add('btn', 'btn-outline-primary', 'btn-sm');
-  buttonElement.setAttribute('type', 'button');
-
-  listItem.append(linkElement, buttonElement);
-  listItem.classList.add('d-flex', 'align-items-center', 'justify-content-between');
-
-  return listItem;
-};
 
 const disableFormElements = (form) => {
   Array.from(form.elements).forEach((element) => {
@@ -102,30 +72,20 @@ const renderForm = (state, formElement) => {
 
 const renderFeeds = (state, container) => {
   container.innerHTML = '';
-
-  const headingElement = document.createElement('h2');
-  headingElement.textContent = t('feeds.heading');
-  headingElement.classList.add('h4', 'mb-4');
-
-  const listElement = document.createElement('ul');
-  listElement.classList.add('list-unstyled', 'm-0', 'd-flex', 'flex-column', 'gap-3');
-  listElement.append(...state.feeds.map(createFeedListItem));
-
-  container.append(headingElement, listElement);
+  const headingText = t('feeds.heading');
+  const heading = createSectionHeading(headingText);
+  const feeds = state.feeds.map(createFeed);
+  const feedsList = createUnorderedList(feeds);
+  container.append(heading, feedsList);
 };
 
 const renderPosts = (state, container) => {
   container.innerHTML = '';
-
-  const headingElement = document.createElement('h2');
-  headingElement.textContent = t('posts.heading');
-  headingElement.classList.add('h4', 'mb-4');
-
-  const listElement = document.createElement('ul');
-  listElement.classList.add('list-unstyled', 'm-0', 'd-flex', 'flex-column', 'gap-3');
-  listElement.append(...state.posts.map(createPostListItem));
-
-  container.append(headingElement, listElement);
+  const headingText = t('posts.heading');
+  const heading = createSectionHeading(headingText);
+  const posts = state.posts.map(createPost);
+  const postsList = createUnorderedList(posts);
+  container.append(heading, postsList);
 };
 
 export { renderForm, renderFeeds, renderPosts };
