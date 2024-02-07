@@ -2,8 +2,9 @@
 
 const FormStatuses = {
   IDLE: 'idle',
-  SUBMITTED: 'submitted',
   FAILED: 'failed',
+  LOADING: 'loading',
+  SUBMITTED: 'submitted',
 };
 
 export { FormStatuses };
