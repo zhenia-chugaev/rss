@@ -15,6 +15,9 @@ const ru = {
         errNetwork: 'Ошибка сети',
       },
     },
+    feeds: {
+      heading: 'Фиды',
+    },
   },
 };
 

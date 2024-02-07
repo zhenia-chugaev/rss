@@ -9,6 +9,22 @@ const {
   SUBMITTED,
 } = FormStatuses;
 
+const createFeedListItem = (feed) => {
+  const listItem = document.createElement('li');
+  const headingElement = document.createElement('h3');
+  const paragraphElement = document.createElement('p');
+
+  headingElement.textContent = feed.title;
+  headingElement.classList.add('h6', 'mb-0');
+
+  paragraphElement.textContent = feed.description;
+  paragraphElement.classList.add('m-0', 'text-secondary', 'small');
+
+  listItem.append(headingElement, paragraphElement);
+
+  return listItem;
+};
+
 const disableFormElements = (form) => {
   Array.from(form.elements).forEach((element) => {
     element.setAttribute('disabled', '');
@@ -63,7 +79,20 @@ const renderForm = (state) => {
   formElement.elements[0].focus();
 };
 
-const renderFeeds = () => {};
+const renderFeeds = (state) => {
+  const feedsContainer = document.querySelector('#feeds');
+  feedsContainer.innerHTML = '';
+
+  const headingElement = document.createElement('h2');
+  headingElement.textContent = t('feeds.heading');
+  headingElement.classList.add('h4', 'mb-4');
+
+  const listElement = document.createElement('ul');
+  listElement.classList.add('list-unstyled', 'm-0', 'd-flex', 'flex-column', 'gap-3');
+  listElement.append(...state.feeds.map(createFeedListItem));
+
+  feedsContainer.append(headingElement, listElement);
+};
 
 const renderPosts = () => {};
 
