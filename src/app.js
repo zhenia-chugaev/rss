@@ -18,10 +18,6 @@ const app = () => {
     posts: [],
   });
 
-  reaction(() => state.subscriptionForm, () => renderForm(state));
-  reaction(() => state.feeds, () => renderFeeds(state));
-  reaction(() => state.posts, () => renderPosts(state));
-
   const httpClient = axios.create({
     baseURL: 'https://allorigins.hexlet.app',
   });
@@ -51,6 +47,8 @@ const app = () => {
     });
 
   const subscriptionForm = document.querySelector('#subscription-form');
+  const feedsContainer = document.querySelector('#feeds');
+  const postsContainer = document.querySelector('#posts');
 
   subscriptionForm.addEventListener('submit', (e) => {
     const formData = new FormData(e.target);
@@ -94,6 +92,10 @@ const app = () => {
       });
     e.preventDefault();
   });
+
+  reaction(() => state.subscriptionForm, () => renderForm(state, subscriptionForm));
+  reaction(() => state.feeds, () => renderFeeds(state, feedsContainer));
+  reaction(() => state.posts, () => renderPosts(state, postsContainer));
 };
 
 export default app;

@@ -54,6 +54,7 @@ const showErrorMessage = (form, message) => {
     'subscriptionForm.feedback.unknownError',
   ]);
   enableFormElements(form);
+  form.elements[0].focus();
 };
 
 const showSuccessMessage = (form, message) => {
@@ -63,6 +64,7 @@ const showSuccessMessage = (form, message) => {
   feedbackElement.classList.add('valid-feedback');
   feedbackElement.textContent = t(message);
   enableFormElements(form);
+  form.elements[0].focus();
 };
 
 const formActions = {
@@ -72,16 +74,14 @@ const formActions = {
   [SUBMITTED]: showSuccessMessage,
 };
 
-const renderForm = (state) => {
+const renderForm = (state, formElement) => {
   const { status, message } = state.subscriptionForm;
-  const formElement = document.querySelector('#subscription-form');
-  formActions[status](formElement, message);
-  formElement.elements[0].focus();
+  const act = formActions[status];
+  act(formElement, message);
 };
 
-const renderFeeds = (state) => {
-  const feedsContainer = document.querySelector('#feeds');
-  feedsContainer.innerHTML = '';
+const renderFeeds = (state, container) => {
+  container.innerHTML = '';
 
   const headingElement = document.createElement('h2');
   headingElement.textContent = t('feeds.heading');
@@ -91,7 +91,7 @@ const renderFeeds = (state) => {
   listElement.classList.add('list-unstyled', 'm-0', 'd-flex', 'flex-column', 'gap-3');
   listElement.append(...state.feeds.map(createFeedListItem));
 
-  feedsContainer.append(headingElement, listElement);
+  container.append(headingElement, listElement);
 };
 
 const renderPosts = () => {};
