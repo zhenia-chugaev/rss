@@ -18,6 +18,10 @@ const ru = {
     feeds: {
       heading: 'Фиды',
     },
+    posts: {
+      heading: 'Посты',
+      modalButton: 'Просмотр',
+    },
   },
 };
 

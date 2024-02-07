@@ -25,6 +25,26 @@ const createFeedListItem = (feed) => {
   return listItem;
 };
 
+const createPostListItem = (post) => {
+  const listItem = document.createElement('li');
+  const linkElement = document.createElement('a');
+  const buttonElement = document.createElement('button');
+
+  linkElement.textContent = post.title;
+  linkElement.classList.add('fw-semibold');
+  linkElement.setAttribute('href', post.link);
+  linkElement.setAttribute('target', '_blank');
+
+  buttonElement.textContent = t('posts.modalButton');
+  buttonElement.classList.add('btn', 'btn-outline-primary', 'btn-sm');
+  buttonElement.setAttribute('type', 'button');
+
+  listItem.append(linkElement, buttonElement);
+  listItem.classList.add('d-flex', 'align-items-center', 'justify-content-between');
+
+  return listItem;
+};
+
 const disableFormElements = (form) => {
   Array.from(form.elements).forEach((element) => {
     element.setAttribute('disabled', '');
@@ -94,6 +114,18 @@ const renderFeeds = (state, container) => {
   container.append(headingElement, listElement);
 };
 
-const renderPosts = () => {};
+const renderPosts = (state, container) => {
+  container.innerHTML = '';
+
+  const headingElement = document.createElement('h2');
+  headingElement.textContent = t('posts.heading');
+  headingElement.classList.add('h4', 'mb-4');
+
+  const listElement = document.createElement('ul');
+  listElement.classList.add('list-unstyled', 'm-0', 'd-flex', 'flex-column', 'gap-3');
+  listElement.append(...state.posts.map(createPostListItem));
+
+  container.append(headingElement, listElement);
+};
 
 export { renderForm, renderFeeds, renderPosts };
