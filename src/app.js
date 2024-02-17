@@ -19,7 +19,9 @@ const app = () => {
     posts: [],
   });
 
-  i18next.init({
+  const i18n = i18next.createInstance();
+
+  i18n.init({
     lng: 'ru',
     resources,
   });
@@ -91,9 +93,9 @@ const app = () => {
     e.preventDefault();
   });
 
-  reaction(() => state.subscriptionForm, () => renderForm(state, subscriptionForm));
-  reaction(() => state.feeds, () => renderFeeds(state, feedsContainer));
-  reaction(() => state.posts, () => renderPosts(state, postsContainer));
+  reaction(() => state.subscriptionForm, () => renderForm(state, subscriptionForm, i18n));
+  reaction(() => state.feeds, () => renderFeeds(state, feedsContainer, i18n));
+  reaction(() => state.posts, () => renderPosts(state, postsContainer, i18n));
 
   when(() => state.feedUrls.length, () => subscribeToFeedUpdates(state));
 };

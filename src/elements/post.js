@@ -1,6 +1,4 @@
-import { t } from 'i18next';
-
-const createPost = (post) => {
+const createPost = (post, { t }) => {
   const postElement = document.createElement('div');
   const linkElement = document.createElement('a');
   const buttonElement = document.createElement('button');

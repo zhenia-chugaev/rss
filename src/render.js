@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import noop from 'lodash/noop';
 import {
   createSectionHeading,
@@ -33,7 +32,7 @@ const resetFormElements = (inputElement, feedbackElement) => {
   feedbackElement.textContent = '';
 };
 
-const showErrorMessage = (form, message) => {
+const showErrorMessage = (form, message, { t }) => {
   const inputElement = form.elements.namedItem('rss-url');
   const feedbackElement = form.querySelector('#rss-url-feedback');
   resetFormElements(inputElement, feedbackElement);
@@ -47,7 +46,7 @@ const showErrorMessage = (form, message) => {
   form.elements[0].focus();
 };
 
-const showSuccessMessage = (form, message) => {
+const showSuccessMessage = (form, message, { t }) => {
   const inputElement = form.elements.namedItem('rss-url');
   const feedbackElement = form.querySelector('#rss-url-feedback');
   resetFormElements(inputElement, feedbackElement);
@@ -64,13 +63,13 @@ const formActions = {
   [SUBMITTED]: showSuccessMessage,
 };
 
-const renderForm = (state, formElement) => {
+const renderForm = (state, formElement, i18next) => {
   const { status, message } = state.subscriptionForm;
   const act = formActions[status];
-  act(formElement, message);
+  act(formElement, message, i18next);
 };
 
-const renderFeeds = (state, container) => {
+const renderFeeds = (state, container, { t }) => {
   container.innerHTML = '';
   const headingText = t('feeds.heading');
   const heading = createSectionHeading(headingText);
@@ -79,11 +78,11 @@ const renderFeeds = (state, container) => {
   container.append(heading, feedsList);
 };
 
-const renderPosts = (state, container) => {
+const renderPosts = (state, container, i18next) => {
   container.innerHTML = '';
-  const headingText = t('posts.heading');
+  const headingText = i18next.t('posts.heading');
   const heading = createSectionHeading(headingText);
-  const posts = state.posts.map(createPost);
+  const posts = state.posts.map((post) => createPost(post, i18next));
   const postsList = createUnorderedList(posts);
   container.append(heading, postsList);
 };
