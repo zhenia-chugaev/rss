@@ -59,11 +59,16 @@ const app = () => {
           status: FormStatuses.LOADING,
           message: '',
         };
-        return httpClient.get('/raw', { params: { url } });
+        return httpClient.get('/get', {
+          params: {
+            url,
+            disableCache: true,
+          },
+        });
       })
       .then(({ data }) => {
         const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(data, 'application/xml');
+        const xmlDoc = parser.parseFromString(data.contents, 'application/xml');
         const error = xmlDoc.querySelector('parsererror');
 
         if (error) {
@@ -75,9 +80,11 @@ const app = () => {
 
         state.feeds = [newFeed, ...state.feeds];
         state.posts = [...items, ...state.posts];
+
+        return data.status.url;
       })
-      .then(() => {
-        state.feedUrls.push(rssUrl);
+      .then((feedUrl) => {
+        state.feedUrls.push(feedUrl);
         state.subscriptionForm = {
           status: FormStatuses.SUBMITTED,
           message: 'subscriptionForm.feedback.rssLoaded',
