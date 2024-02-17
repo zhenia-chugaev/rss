@@ -1,11 +1,19 @@
 import camelCase from 'lodash/camelCase';
 
+const parseXmlString = (string) => {
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(string, 'application/xml');
+  return xmlDoc;
+};
+
 const getFeedItemDetails = (itemElement) => {
   const titleElement = itemElement.querySelector('title');
   const linkElement = itemElement.querySelector('link');
+  const pubDateElement = itemElement.querySelector('pubDate');
   const title = titleElement.textContent;
   const link = linkElement.textContent;
-  return { title, link };
+  const publishedAt = pubDateElement.textContent;
+  return { title, link, publishedAt };
 };
 
 const getFeedDetails = (doc) => {
@@ -25,4 +33,4 @@ const getTranslationKeyFromError = (error) => {
     : `subscriptionForm.feedback.${message}`;
 };
 
-export { getFeedDetails, getTranslationKeyFromError };
+export { parseXmlString, getFeedDetails, getTranslationKeyFromError };

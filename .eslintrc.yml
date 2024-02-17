@@ -4,7 +4,7 @@ env:
 extends: airbnb-base
 overrides: [
   {
-    files: src/render.js,
+    files: [src/render.js, src/controllers.js],
     rules: {
       no-param-reassign: warn
     }

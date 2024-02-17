@@ -1,10 +1,11 @@
-import { makeAutoObservable, reaction } from 'mobx';
-import axios from 'axios';
+import { makeAutoObservable, reaction, when } from 'mobx';
 import i18next from 'i18next';
 import { string, setLocale } from 'yup';
 import { renderForm, renderFeeds, renderPosts } from './render';
 import resources from './locales';
-import { getFeedDetails, getTranslationKeyFromError } from './utils';
+import { loadFeedContents } from './http';
+import { subscribeToFeedUpdates } from './controllers';
+import { parseXmlString, getFeedDetails, getTranslationKeyFromError } from './utils';
 import { FormStatuses } from './constants';
 
 const app = () => {
@@ -16,10 +17,6 @@ const app = () => {
     },
     feeds: [],
     posts: [],
-  });
-
-  const httpClient = axios.create({
-    baseURL: 'https://allorigins.hexlet.app',
   });
 
   i18next.init({
@@ -59,16 +56,10 @@ const app = () => {
           status: FormStatuses.LOADING,
           message: '',
         };
-        return httpClient.get('/get', {
-          params: {
-            url,
-            disableCache: true,
-          },
-        });
+        return loadFeedContents(url);
       })
       .then(({ data }) => {
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(data.contents, 'application/xml');
+        const xmlDoc = parseXmlString(data.contents);
         const error = xmlDoc.querySelector('parsererror');
 
         if (error) {
@@ -103,6 +94,8 @@ const app = () => {
   reaction(() => state.subscriptionForm, () => renderForm(state, subscriptionForm));
   reaction(() => state.feeds, () => renderFeeds(state, feedsContainer));
   reaction(() => state.posts, () => renderPosts(state, postsContainer));
+
+  when(() => state.feedUrls.length, () => subscribeToFeedUpdates(state));
 };
 
 export default app;
