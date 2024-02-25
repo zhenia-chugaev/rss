@@ -20,7 +20,7 @@ const ru = {
     },
     posts: {
       heading: 'Посты',
-      modalButton: 'Просмотр',
+      openModalButton: 'Просмотр',
     },
   },
 };

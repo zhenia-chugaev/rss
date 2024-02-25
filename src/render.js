@@ -5,6 +5,7 @@ import {
   createFeed,
   createPost,
 } from './elements';
+import { onPostLinkClick } from './controllers';
 import { FormStatuses } from './constants';
 
 const {
@@ -82,9 +83,34 @@ const renderPosts = (state, container, i18next) => {
   container.innerHTML = '';
   const headingText = i18next.t('posts.heading');
   const heading = createSectionHeading(headingText);
-  const posts = state.posts.map((post) => createPost(post, i18next));
+  const posts = state.posts.map((post) => (
+    createPost(post, onPostLinkClick(state), i18next)
+  ));
   const postsList = createUnorderedList(posts);
   container.append(heading, postsList);
 };
 
-export { renderForm, renderFeeds, renderPosts };
+const renderPostModal = (state, postModal) => {
+  const titleElement = postModal.querySelector('#post-modal-title');
+  const descriptionElement = postModal.querySelector('#post-modal-description');
+  const linkElement = postModal.querySelector('#post-modal-link');
+
+  const { ui: { postModal: { postId } } } = state;
+
+  const {
+    title = '',
+    link = '#',
+    description = '',
+  } = (postId && state.posts.find((post) => post.id === postId)) || {};
+
+  titleElement.textContent = title;
+  descriptionElement.textContent = description;
+  linkElement.setAttribute('href', link);
+};
+
+export {
+  renderForm,
+  renderFeeds,
+  renderPosts,
+  renderPostModal,
+};

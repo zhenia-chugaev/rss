@@ -67,4 +67,31 @@ const subscribeToFeedUpdates = (state, interval = 5000) => setInterval(
   interval,
 );
 
-export { onSubscriptionFormSubmit, subscribeToFeedUpdates };
+const onPostModalOpen = (state) => (e) => {
+  const triggerButton = e.relatedTarget;
+  const { postId } = triggerButton.dataset;
+  state.ui.postModal = { postId };
+  state.posts = state.posts.map((post) => (
+    post.id === postId ? { ...post, isRead: true } : post
+  ));
+};
+
+const onPostModalClose = (state) => () => {
+  const postId = '';
+  state.ui.postModal = { postId };
+};
+
+const onPostLinkClick = (state) => (e) => {
+  const { postId } = e.target.dataset;
+  state.posts = state.posts.map((post) => (
+    post.id === postId ? { ...post, isRead: true } : post
+  ));
+};
+
+export {
+  onSubscriptionFormSubmit,
+  subscribeToFeedUpdates,
+  onPostModalOpen,
+  onPostModalClose,
+  onPostLinkClick,
+};
