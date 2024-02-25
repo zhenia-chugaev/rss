@@ -34,6 +34,10 @@ const getFeedDetails = (doc) => {
   };
 };
 
+const markPostAsRead = (posts, postId) => posts.map((post) => (
+  post.id === postId ? { ...post, isRead: true } : post
+));
+
 const getTranslationKeyFromError = (error) => {
   const { isAxiosError, code, message } = error;
   return isAxiosError
@@ -41,4 +45,9 @@ const getTranslationKeyFromError = (error) => {
     : `subscriptionForm.feedback.${message}`;
 };
 
-export { parseXmlString, getFeedDetails, getTranslationKeyFromError };
+export {
+  parseXmlString,
+  getFeedDetails,
+  markPostAsRead,
+  getTranslationKeyFromError,
+};

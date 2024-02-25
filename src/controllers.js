@@ -1,6 +1,11 @@
 import noop from 'lodash/noop';
 import { loadFeedContents } from './http';
-import { parseXmlString, getFeedDetails, getTranslationKeyFromError } from './utils';
+import {
+  parseXmlString,
+  getFeedDetails,
+  markPostAsRead,
+  getTranslationKeyFromError,
+} from './utils';
 import { FormStatuses } from './constants';
 
 const onSubscriptionFormSubmit = (state, urlSchema) => (e) => {
@@ -70,10 +75,9 @@ const subscribeToFeedUpdates = (state, interval = 5000) => setInterval(
 const onPostModalOpen = (state) => (e) => {
   const triggerButton = e.relatedTarget;
   const { postId } = triggerButton.dataset;
+  const updatedPosts = markPostAsRead(state.posts, postId);
   state.ui.postModal = { postId };
-  state.posts = state.posts.map((post) => (
-    post.id === postId ? { ...post, isRead: true } : post
-  ));
+  state.posts = updatedPosts;
 };
 
 const onPostModalClose = (state) => () => {
@@ -83,9 +87,8 @@ const onPostModalClose = (state) => () => {
 
 const onPostLinkClick = (state) => (e) => {
   const { postId } = e.target.dataset;
-  state.posts = state.posts.map((post) => (
-    post.id === postId ? { ...post, isRead: true } : post
-  ));
+  const updatedPosts = markPostAsRead(state.posts, postId);
+  state.posts = updatedPosts;
 };
 
 export {
