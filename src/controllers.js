@@ -22,8 +22,7 @@ const onSubscriptionFormSubmit = (state, urlSchema) => (e) => {
         throw new Error('invalidRss');
       }
 
-      const { title, description, items } = getFeedDetails(xmlDoc);
-      const newFeed = { title, description };
+      const { items, ...newFeed } = getFeedDetails(xmlDoc);
 
       state.feeds = [newFeed, ...state.feeds];
       state.posts = [...items, ...state.posts];

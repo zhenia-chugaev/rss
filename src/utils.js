@@ -1,4 +1,5 @@
 import camelCase from 'lodash/camelCase';
+import uniqueId from 'lodash/uniqueId';
 
 const parseXmlString = (string) => {
   const parser = new DOMParser();
@@ -9,21 +10,28 @@ const parseXmlString = (string) => {
 const getFeedItemDetails = (itemElement) => {
   const titleElement = itemElement.querySelector('title');
   const linkElement = itemElement.querySelector('link');
+  const descriptionElement = itemElement.querySelector('description');
   const pubDateElement = itemElement.querySelector('pubDate');
-  const title = titleElement.textContent;
-  const link = linkElement.textContent;
-  const publishedAt = pubDateElement.textContent;
-  return { title, link, publishedAt };
+  return {
+    id: uniqueId(),
+    title: titleElement.textContent,
+    link: linkElement.textContent,
+    description: descriptionElement.textContent,
+    publishedAt: pubDateElement.textContent,
+    isRead: false,
+  };
 };
 
 const getFeedDetails = (doc) => {
   const titleElement = doc.querySelector('title');
   const descriptionElement = doc.querySelector('description');
   const itemElements = doc.querySelectorAll('item');
-  const title = titleElement.textContent;
-  const description = descriptionElement.textContent;
-  const items = Array.from(itemElements, getFeedItemDetails);
-  return { title, description, items };
+  return {
+    id: Date.now(),
+    title: titleElement.textContent,
+    description: descriptionElement.textContent,
+    items: Array.from(itemElements, getFeedItemDetails),
+  };
 };
 
 const getTranslationKeyFromError = (error) => {
