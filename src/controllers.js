@@ -59,7 +59,9 @@ const subscribeToFeedUpdates = (state, interval = 5000) => setInterval(
       .flatMap(({ items }) => items)
       .filter((post) => Date.parse(post.publishedAt) >= (Date.now() - interval)))
     .then((newPosts) => {
-      state.posts = [...newPosts, ...state.posts];
+      if (newPosts.length) {
+        state.posts = [...newPosts, ...state.posts];
+      }
     })
     .catch(noop),
   interval,
