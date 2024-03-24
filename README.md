@@ -6,5 +6,5 @@
 ## Description
 RSS Reader - web service for aggregating rss feeds.
 
-## How to run the app
+## Live demo
 The app is available at [https://aggrssor.vercel.app/](https://aggrssor.vercel.app/)
