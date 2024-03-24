@@ -104,8 +104,11 @@ const renderPostModal = (state, postModal) => {
   } = (postId && state.posts.find((post) => post.id === postId)) || {};
 
   titleElement.textContent = title;
-  descriptionElement.textContent = description;
+  descriptionElement.innerHTML = description;
   linkElement.setAttribute('href', link);
+
+  const imageElements = descriptionElement.querySelectorAll('img');
+  imageElements.forEach((img) => img.classList.add('img-fluid'));
 };
 
 export {
